@@ -5,6 +5,7 @@
             <field name="model">res.branch</field>
             <field name="arch" type="xml">
                 <tree string="Branch">
+                    <field name="internal_reference"/>
                     <field name="name"/>
                     <field name="notes"/>
                     <field name="active"/>
@@ -23,6 +24,7 @@
                         <group row="2">
                             <group>
                                 <field name="name"/>
+                                <field name="internal_reference"/>
                                 <field name="active" invisible="1"/>
                                 <field name="user_ids" widget="many2many_tags"/>
                             </group>
