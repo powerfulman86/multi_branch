@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError, UserError
 
 
 class ResBranch(models.Model):
@@ -27,6 +28,12 @@ class ResBranch(models.Model):
             "Branch Code must be unique across the database!",
         )
     ]
+
+    @api.constrains('internal_reference')
+    def constrains_internal_reference(self):
+        for rec in self:
+            if not rec.internal_reference.isdigit():
+                raise ValidationError(_("Branch Number Must Be In Digits"))
 
     def name_get(self):
         result = []
