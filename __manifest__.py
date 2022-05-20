@@ -8,6 +8,7 @@
     'depends': ['base', 'portal', 'contacts'],
     'data': [
         'security/ir.model.access.csv',
+        'security/ir_rule.xml',
         'views/branch_views.xml',
         'views/res_users_view.xml',
     ],

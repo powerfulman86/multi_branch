@@ -2,6 +2,9 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class ResBranch(models.Model):
@@ -51,6 +54,9 @@ class ResBranch(models.Model):
             domain = ['|', ('name', operator, name), ('internal_reference', operator, name)]
         recs = self.search(domain, limit=limit)
         return recs.name_get()
+
+    def get_default_branch(self):
+        return self.env['res.branch'].search([], limit=1, order='id').id
 
 
 class ResUsers(models.Model):
