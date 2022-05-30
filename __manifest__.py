@@ -7,8 +7,8 @@
     'category': 'Other',
     'depends': ['base', 'portal', 'contacts'],
     'data': [
-        'security/ir.model.access.csv',
         'security/ir_rule.xml',
+        'security/ir.model.access.csv',
         'views/branch_views.xml',
         'views/res_users_view.xml',
     ],
