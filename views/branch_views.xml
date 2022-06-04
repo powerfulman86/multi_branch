@@ -21,13 +21,16 @@
                     <sheet>
                         <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
                                 attrs="{'invisible': [('active', '=', True)]}"/>
-                        <group row="2">
+                        <group>
                             <group>
                                 <field name="name"/>
                                 <field name="internal_reference"/>
+                                <field name="sale_sequence_id"/>
                                 <field name="active" invisible="1"/>
                                 <field name="user_ids" widget="many2many_tags"/>
                             </group>
+                        </group>
+                        <group>
                             <field name="notes" placeholder="Notes ..."/>
                         </group>
                     </sheet>

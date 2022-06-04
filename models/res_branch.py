@@ -12,8 +12,8 @@ class ResBranch(models.Model):
     _description = 'System Branches'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
 
-    name = fields.Char('Branch', translate=True, )
-    internal_reference = fields.Char(string="Internal Reference", required=False, )
+    name = fields.Char('Branch', translate=True, required=True)
+    internal_reference = fields.Char(string="Internal Reference", required=True, size=2)
     notes = fields.Text('Notes')
     active = fields.Boolean('Active', default=True, tracking=True,
                             help="Set active to false to hide the Branch without removing it.")
@@ -24,6 +24,8 @@ class ResBranch(models.Model):
         help='Users have added here, them will see any datas have linked to this Branch'
     )
 
+    sale_sequence_id = fields.Many2one('ir.sequence', 'Sale Sequence', copy=False, readonly=True)
+
     _sql_constraints = [
         (
             "branch_code_uniq",
@@ -31,6 +33,23 @@ class ResBranch(models.Model):
             "Branch Code must be unique across the database!",
         )
     ]
+
+    @api.model
+    def create(self, vals):
+        vals['sale_sequence_id'] = self.env['ir.sequence'].create({
+            'name': _('Sale_Sequence_') + vals['name'],
+            'prefix': 'S%(y)s' + vals['internal_reference'], 'padding': 4,
+            'company_id': self.env.company.id, }).id
+
+        return super(ResBranch, self).create(vals)
+
+    def write(self, vals):
+        if not self.sale_sequence_id:
+            vals['sale_sequence_id'] = self.env['ir.sequence'].create({
+                'name': _('Sale_Sequence_') + self.name,
+                'prefix': 'S%(y)s' + self.internal_reference, 'padding': 4,
+                'company_id': self.env.company.id, }).id
+        return super(ResBranch, self).write(vals)
 
     @api.constrains('internal_reference')
     def constrains_internal_reference(self):
